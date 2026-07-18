@@ -1,0 +1,1 @@
+alias mfzf='micro $(fzf)'

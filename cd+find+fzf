@@ -1,0 +1,1 @@
+alias cfzf='cd $(find -type d | fzf)'

@@ -1,13 +1,11 @@
 frg() {
-  # 1. 検索文字列を引数から取得。空なら入力を促す
+  # (上部はそのまま)
   local query="$*"
   if [ -z "$query" ]; then
     echo "検索キーワードを指定してください。 (例: frg target_word)"
     return 1
   fi
 
-  # 2. rgで検索し、fzfで絞り込み、選択した行のデータを取得
-  # 出力形式:「ファイル名:行番号:列番号:マッチしたテキスト」
   local selection
   selection=$(rg --line-number --no-heading --color=always --smart-case "$query" | \
     fzf --ansi \
@@ -23,7 +21,7 @@ frg() {
     file=$(echo "$selection" | cut -d: -f1)
     line=$(echo "$selection" | cut -d: -f2)
 
-    # microは「ファイル名:行番号」の形式でその行を直接開ける
-    micro "$file:$line"
+    # 修正ポイント: 「+行番号 ファイル名」の形に変える
+    micro "+$line" "$file"
   fi
 }
